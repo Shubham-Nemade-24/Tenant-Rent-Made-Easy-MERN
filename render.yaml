@@ -1,0 +1,27 @@
+# render.yaml — Render Blueprint
+#
+# Deploys as a SINGLE web service. The build step compiles the React app
+# and copies the output into server/public/ so Express serves everything.
+
+services:
+  - type: web
+    name: rent-tracker
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: .
+    buildCommand: |
+      cd client && npm install && npm run build &&
+      mkdir -p ../server/public &&
+      cp -r dist/* ../server/public/ &&
+      cd ../server && npm install
+    startCommand: cd server && node index.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: MONGO_DB
+        value: rental_rooms
+      - key: APP_PASSWORD
+        sync: false
+      - key: NODE_ENV
+        value: production
