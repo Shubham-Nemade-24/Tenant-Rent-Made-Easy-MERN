@@ -11,7 +11,7 @@ services:
     plan: free
     rootDir: .
     buildCommand: |
-      cd client && npm install && npm run build &&
+      cd client && npm install --include=dev && npm run build &&
       mkdir -p ../server/public &&
       cp -r dist/* ../server/public/ &&
       cd ../server && npm install
